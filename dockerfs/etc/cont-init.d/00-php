@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+
+if [ $PHP_OPCACHE -eq 0 ]; then
+    /usr/local/sbin/opcache_toggle.sh 0
+else
+    /usr/local/sbin/opcache_toggle.sh 1
+fi
+
+if [ $PHP_XDEBUG -eq 0 ]; then
+    /usr/local/sbin/xdebug_toggle.sh 0
+else
+    /usr/local/sbin/xdebug_toggle.sh 1
+fi
+
+echo " * Set timezone to ${TIMEZONE} * "
+_escaped=$(echo $TIMEZONE | sed  "s/\//\\\\\\//g")
+sed -r -i "s/;?date.timezone =.*/date.timezone = ${_escaped}/g" /etc/php.ini

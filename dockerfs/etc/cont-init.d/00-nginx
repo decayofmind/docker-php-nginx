@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+echo " * Set virtualhost to ${VIRTUAL_HOST} * "
+sed -i -r "s/server_name .*;/server_name ${VIRTUAL_HOST};/g" /etc/nginx/conf.d/default.conf
+
+if [ $ASSETS_CACHE -eq 0 ]; then
+    echo " * Turn OFF - ASSETS_CACHE * "
+    sed -i -r "s/^(\s*)expires 30d; #ASSETS_CACHE$/\1#expires 30d; #ASSETS_CACHE/g" /etc/nginx/conf.d/default.conf
+else
+    echo " * Turn ON - ASSETS_CACHE * "
+    sed -i -r "s/^(\s*)#expires 30d; #ASSETS_CACHE$/\1expires 30d; #ASSETS_CACHE/g" /etc/nginx/conf.d/default.conf
+fi
